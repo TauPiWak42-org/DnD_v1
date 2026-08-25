@@ -1,1 +1,209 @@
 @import "tailwindcss";
+
+:root {
+  --ink: #16100a;
+  --coal: #211810;
+  --panel: #261b11;
+  --panel-2: #2d2013;
+  --line: #443220;
+  --line-soft: #372918;
+  --bone: #efe3cd;
+  --bone-dim: #c9b693;
+  --mute: #9c8462;
+  --ember: #f08c2e;
+  --ember-hot: #ffb347;
+  --gold: #d9a84e;
+  --teal: #5fc4a4;
+  --blood: #d4553f;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--ink);
+  color: var(--bone);
+  font-family: "Alegreya", Georgia, serif;
+  overflow-x: hidden;
+}
+
+.font-display {
+  font-family: "Forum", "Alegreya", serif;
+}
+.font-ui {
+  font-family: "Alegreya Sans", "Alegreya", sans-serif;
+}
+
+/* ---------- ambient background ---------- */
+.bg-forge {
+  background:
+    radial-gradient(1100px 620px at 12% -8%, rgba(240, 140, 46, 0.14), transparent 60%),
+    radial-gradient(900px 540px at 96% 4%, rgba(95, 196, 164, 0.07), transparent 55%),
+    radial-gradient(1200px 900px at 50% 118%, rgba(217, 168, 78, 0.1), transparent 60%),
+    linear-gradient(178deg, #1b130b 0%, #16100a 46%, #120c07 100%);
+}
+
+.noise-veil {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+  opacity: 0.05;
+  mix-blend-mode: overlay;
+}
+
+.rune-grid {
+  background-image:
+    linear-gradient(rgba(217, 168, 78, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(217, 168, 78, 0.045) 1px, transparent 1px);
+  background-size: 44px 44px;
+  mask-image: radial-gradient(700px 500px at 50% 0%, black, transparent 78%);
+}
+
+/* ---------- embers ---------- */
+@keyframes ember-rise {
+  0% { transform: translateY(0) translateX(0) scale(1); opacity: 0; }
+  8% { opacity: var(--peak, 0.85); }
+  55% { opacity: calc(var(--peak, 0.85) * 0.6); }
+  100% { transform: translateY(-108vh) translateX(var(--drift, 24px)) scale(0.4); opacity: 0; }
+}
+.ember {
+  position: absolute;
+  bottom: -2vh;
+  border-radius: 9999px;
+  background: radial-gradient(circle, #ffd9a0 0%, #f08c2e 55%, rgba(240, 140, 46, 0) 72%);
+  filter: blur(0.5px);
+  animation: ember-rise linear infinite;
+  pointer-events: none;
+}
+
+/* ---------- panels ---------- */
+.panel {
+  background: linear-gradient(168deg, var(--panel-2), var(--panel) 55%, #221709);
+  border: 1px solid var(--line);
+  box-shadow:
+    0 1px 0 rgba(255, 214, 150, 0.06) inset,
+    0 -14px 34px rgba(0, 0, 0, 0.28) inset,
+    0 22px 44px rgba(0, 0, 0, 0.42);
+}
+.panel-etched {
+  position: relative;
+}
+.panel-etched::before {
+  content: "";
+  position: absolute;
+  inset: 7px;
+  border: 1px solid rgba(217, 168, 78, 0.14);
+  pointer-events: none;
+}
+.corner-notch {
+  clip-path: polygon(14px 0, calc(100% - 14px) 0, 100% 14px, 100% calc(100% - 14px), calc(100% - 14px) 100%, 14px 100%, 0 calc(100% - 14px), 0 14px);
+}
+
+/* ---------- buttons ---------- */
+.btn-ember {
+  font-family: "Alegreya Sans", sans-serif;
+  background: linear-gradient(180deg, #ffab4a, #e07b1d 58%, #b95f10);
+  color: #241303;
+  border: 1px solid #ffb861;
+  box-shadow: 0 2px 0 #7c3d07, 0 10px 26px rgba(240, 140, 46, 0.28);
+  transition: transform 0.12s ease, box-shadow 0.12s ease, filter 0.12s ease;
+}
+.btn-ember:hover:not(:disabled) { filter: brightness(1.08); transform: translateY(-1px); box-shadow: 0 3px 0 #7c3d07, 0 14px 30px rgba(240,140,46,.38); }
+.btn-ember:active:not(:disabled) { transform: translateY(1px); box-shadow: 0 0 0 #7c3d07, 0 6px 16px rgba(240,140,46,.25); }
+.btn-ember:disabled { opacity: 0.45; cursor: not-allowed; }
+
+.btn-ghost {
+  font-family: "Alegreya Sans", sans-serif;
+  border: 1px solid var(--line);
+  color: var(--bone-dim);
+  background: rgba(38, 27, 17, 0.6);
+  transition: all 0.14s ease;
+}
+.btn-ghost:hover:not(:disabled) { border-color: var(--gold); color: var(--bone); background: rgba(217, 168, 78, 0.08); }
+.btn-ghost:active:not(:disabled) { transform: translateY(1px); }
+.btn-ghost:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* ---------- dice ---------- */
+@keyframes die-pop {
+  0% { transform: scale(0.3) rotate(-14deg); opacity: 0; }
+  60% { transform: scale(1.14) rotate(3deg); opacity: 1; }
+  100% { transform: scale(1) rotate(0); }
+}
+.die-pop { animation: die-pop 0.42s cubic-bezier(0.2, 1.4, 0.4, 1) both; }
+
+@keyframes fate-shake {
+  0%, 100% { transform: rotate(0) scale(1); }
+  20% { transform: rotate(-7deg) scale(1.04); }
+  40% { transform: rotate(6deg) scale(0.97); }
+  60% { transform: rotate(-5deg) scale(1.05); }
+  80% { transform: rotate(4deg) scale(0.99); }
+}
+.fate-shake { animation: fate-shake 0.55s ease-in-out infinite; }
+
+@keyframes crit-flash {
+  0%, 100% { filter: drop-shadow(0 0 6px rgba(217, 168, 78, 0.55)); }
+  50% { filter: drop-shadow(0 0 22px rgba(255, 179, 71, 0.95)); }
+}
+.crit-glow { animation: crit-flash 1.4s ease-in-out infinite; }
+
+@keyframes fumble-flash {
+  0%, 100% { filter: drop-shadow(0 0 4px rgba(212, 85, 63, 0.4)); }
+  50% { filter: drop-shadow(0 0 18px rgba(212, 85, 63, 0.9)); }
+}
+.fumble-glow { animation: fumble-flash 1.2s ease-in-out infinite; }
+
+.sigil:hover svg { transform: rotate(18deg) scale(1.06); }
+.sigil svg { transition: transform 0.5s cubic-bezier(0.2, 1.2, 0.3, 1); }
+
+/* ---------- reveal on scroll ---------- */
+.reveal {
+  opacity: 0;
+  transform: translateY(26px);
+  transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.reveal.is-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ---------- npc card ---------- */
+@keyframes npc-in {
+  0% { transform: perspective(700px) rotateY(68deg) translateX(24px); opacity: 0; }
+  100% { transform: perspective(700px) rotateY(0) translateX(0); opacity: 1; }
+}
+.npc-in { animation: npc-in 0.5s cubic-bezier(0.2, 1, 0.3, 1) both; }
+
+@keyframes row-in {
+  0% { transform: translateY(-6px); opacity: 0; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+.row-in { animation: row-in 0.3s ease both; }
+
+/* ---------- misc ---------- */
+@keyframes toast-in {
+  0% { transform: translateX(24px); opacity: 0; }
+  100% { transform: translateX(0); opacity: 1; }
+}
+.toast-in { animation: toast-in 0.25s cubic-bezier(0.2, 1.2, 0.4, 1) both; }
+
+.scroll-slim::-webkit-scrollbar { width: 8px; }
+.scroll-slim::-webkit-scrollbar-track { background: rgba(0,0,0,0.25); }
+.scroll-slim::-webkit-scrollbar-thumb { background: #4a3826; border-radius: 8px; }
+.scroll-slim::-webkit-scrollbar-thumb:hover { background: #6a5236; }
+
+input, textarea, select {
+  font-family: "Alegreya Sans", sans-serif;
+}
+input:focus-visible, textarea:focus-visible, button:focus-visible {
+  outline: 2px solid rgba(240, 140, 46, 0.55);
+  outline-offset: 1px;
+}
+
+.text-outline-gold {
+  -webkit-text-stroke: 1px rgba(217, 168, 78, 0.75);
+  color: transparent;
+}
+
+.divider-rune {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(217, 168, 78, 0.4), transparent);
+}
